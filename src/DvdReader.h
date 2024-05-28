@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <cstdio>
 #include <unistd.h>
+#include "BufferReader.h"
 
 /* shall we use libdvdnav's read ahead cache? */
 #define DVD_READ_CACHE 1
@@ -42,8 +43,6 @@ protected:
     int result, event, len;
     int finished;
     uint8_t ts_chunk;
-    HLS hls;
-
 };
 
 

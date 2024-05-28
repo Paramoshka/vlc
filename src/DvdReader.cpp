@@ -62,7 +62,8 @@ int DvdReader::writeBuffer() {
                  * A real player application would now pass this block through demuxing
                  * and decoding. We simply write it to disc here. */
 
-                hls.generate_ts(buf, "PATH", len);
+                //make remux
+                BufferReader::read_buffer(buf, sizeof(buf));
                 break;
             case DVDNAV_NOP:
                 /* Nothing to do here. */
@@ -119,30 +120,29 @@ int DvdReader::writeBuffer() {
                 dvdnav_get_current_nav_dsi(dvdnav);
 
 
-//                if(pci->hli.hl_gi.btn_ns > 0) {
-//                    int button;
-//
-//                    printf("Found %i DVD menu buttons...\n", pci->hli.hl_gi.btn_ns);
-//
-//                    for (button = 0; button < pci->hli.hl_gi.btn_ns; button++) {
-//                        const btni_t *btni = &(pci->hli.btnit[button]);
-//                        printf("Button %i top-left @ (%i,%i), bottom-right @ (%i,%i)\n",
-//                               button + 1, btni->x_start, btni->y_start,
-//                               btni->x_end, btni->y_end);
-//                    }
-//
-//                    button = 0;
-//                    while ((button <= 0) || (button > pci->hli.hl_gi.btn_ns)) {
-//                        //Пишем в буфер
-//                        //printf("Which button (1 to %i): ", pci->hli.hl_gi.btn_ns);
-//                        //hls.generate_ts(buf, "PATH", len);
-//                        scanf("%i", &button);
-//                    }
-//                    printf("Selecting button %i...\n", button);
-//                    /* This is the point where applications with fifos have to hand in a NAV packet
-//                     * which has traveled through the fifos. See the notes above. */
-//                    dvdnav_button_select_and_activate(dvdnav, pci, button);
-//                }
+                if(pci->hli.hl_gi.btn_ns > 0) {
+                    int button;
+
+                    printf("Found %i DVD menu buttons...\n", pci->hli.hl_gi.btn_ns);
+
+                    for (button = 0; button < pci->hli.hl_gi.btn_ns; button++) {
+                        const btni_t *btni = &(pci->hli.btnit[button]);
+                        printf("Button %i top-left @ (%i,%i), bottom-right @ (%i,%i)\n",
+                               button + 1, btni->x_start, btni->y_start,
+                               btni->x_end, btni->y_end);
+                    }
+
+                    button = 0;
+                    while ((button <= 0) || (button > pci->hli.hl_gi.btn_ns)) {
+                        //Пишем в буфер
+                        printf("Which button (1 to %i): ", pci->hli.hl_gi.btn_ns);
+                        scanf("%i", &button);
+                    }
+                    printf("Selecting button %i...\n", button);
+                    /* This is the point where applications with fifos have to hand in a NAV packet
+                     * which has traveled through the fifos. See the notes above. */
+                    dvdnav_button_select_and_activate(dvdnav, pci, button);
+                }
             }
             break;
             case DVDNAV_STOP:

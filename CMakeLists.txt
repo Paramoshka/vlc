@@ -10,8 +10,8 @@ add_executable(vlc_js main.cpp
         src/Utils.h
         src/HLS.cpp
         src/HLS.h
-        src/vlc.cpp
-        src/vlc.h
+        src/BufferReader.cpp
+        src/BufferReader.h
 )
 
 #oat
@@ -25,7 +25,14 @@ include_directories(oat/include/oatpp-1.3.0/oatpp)
 message(STATUS "trying find dvdnav lib /usr/lib")
 find_library(DVD_NAV NAMES dvdnav PATHS /usr/lib)
 message(STATUS ${DVD_NAV} "if not found try install libdvdnav-dev")
-target_link_libraries(${PROJECT_NAME} ${DVD_NAV})
+
+
+find_library(AVCODEC_LIBRARY avcodec)
+message(STATUS ${AVCODEC_LIBRARY})
+find_library(AVFORMAT_LIBRARY avformat)
+message(STATUS ${AVFORMAT_LIBRARY})
+
+target_link_libraries(${PROJECT_NAME} ${DVD_NAV} ${AVCODEC_LIBRARY} ${AVFORMAT_LIBRARY})
 
 #vlc
-target_link_libraries(${PROJECT_NAME} -lvlc)
+#target_link_libraries(${PROJECT_NAME} -lvlc)

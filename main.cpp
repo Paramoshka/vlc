@@ -1,11 +1,11 @@
 #include <iostream>
-#include "src/vlc.h"
+#include "src/DvdReader.h"
 
 
 int main() {
     auto pathHTTP = "https://web.landoffreedom.ru/movie/2.ISO";
-    auto vlc = new VLC();
-    vlc->playMedia(pathHTTP);
+    auto dvd = new DvdReader(pathHTTP);
+    dvd->writeBuffer();
     std::cout << "Server is running" << std::endl;
     return 0;
 }
